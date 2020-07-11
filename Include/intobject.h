@@ -22,7 +22,7 @@ extern "C" {
 
 typedef struct {
     PyObject_HEAD
-    long ob_ival;
+    long long ob_ival;
 } PyIntObject;
 
 PyAPI_DATA(PyTypeObject) PyInt_Type;
@@ -38,18 +38,18 @@ PyAPI_FUNC(PyObject *) PyInt_FromString(char*, char**, int);
 #ifdef Py_USING_UNICODE
 PyAPI_FUNC(PyObject *) PyInt_FromUnicode(Py_UNICODE*, Py_ssize_t, int);
 #endif
-PyAPI_FUNC(PyObject *) PyInt_FromLong(long);
+PyAPI_FUNC(PyObject *) PyInt_FromLong(long long);
 PyAPI_FUNC(PyObject *) PyInt_FromSize_t(size_t);
 PyAPI_FUNC(PyObject *) PyInt_FromSsize_t(Py_ssize_t);
-PyAPI_FUNC(long) PyInt_AsLong(PyObject *);
+PyAPI_FUNC(long long) PyInt_AsLong(PyObject *);
 PyAPI_FUNC(Py_ssize_t) PyInt_AsSsize_t(PyObject *);
 PyAPI_FUNC(int) _PyInt_AsInt(PyObject *);
-PyAPI_FUNC(unsigned long) PyInt_AsUnsignedLongMask(PyObject *);
+PyAPI_FUNC(unsigned long long) PyInt_AsUnsignedLongMask(PyObject *);
 #ifdef HAVE_LONG_LONG
 PyAPI_FUNC(unsigned PY_LONG_LONG) PyInt_AsUnsignedLongLongMask(PyObject *);
 #endif
 
-PyAPI_FUNC(long) PyInt_GetMax(void);
+PyAPI_FUNC(long long) PyInt_GetMax(void);
 
 /* Macro, trading safety for speed */
 #define PyInt_AS_LONG(op) (((PyIntObject *)(op))->ob_ival)

@@ -937,7 +937,7 @@ q_get(void *ptr, Py_ssize_t size)
     PY_LONG_LONG val;
     memcpy(&val, ptr, sizeof(val));
     GET_BITFIELD(val, size);
-    return PyLong_FromLongLong(val);
+    return PyInt_FromLong(val);
 }
 
 static PyObject *

@@ -98,11 +98,11 @@ _PyLong_Copy(PyLongObject *src)
 /* Create a new long int object from a C long int */
 
 PyObject *
-PyLong_FromLong(long ival)
+PyLong_FromLong(long long ival)
 {
     PyLongObject *v;
-    unsigned long abs_ival;
-    unsigned long t;  /* unsigned so >> doesn't propagate sign bit */
+    unsigned long long abs_ival;
+    unsigned long long t;  /* unsigned so >> doesn't propagate sign bit */
     int ndigits = 0;
     int negative = 0;
 
@@ -110,11 +110,11 @@ PyLong_FromLong(long ival)
         /* if LONG_MIN == -LONG_MAX-1 (true on most platforms) then
            ANSI C says that the result of -ival is undefined when ival
            == LONG_MIN.  Hence the following workaround. */
-        abs_ival = (unsigned long)(-1-ival) + 1;
+        abs_ival = (unsigned long long)(-1-ival) + 1;
         negative = 1;
     }
     else {
-        abs_ival = (unsigned long)ival;
+        abs_ival = (unsigned long long)ival;
     }
 
     /* Count the number of Python digits.
@@ -228,13 +228,13 @@ PyLong_FromDouble(double dval)
    condition.
 */
 
-long
+long long
 PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
 {
     /* This version by Tim Peters */
     register PyLongObject *v;
-    unsigned long x, prev;
-    long res;
+    unsigned long long x, prev;
+    long long res;
     Py_ssize_t i;
     int sign;
     int do_decref = 0; /* if nb_int was called */
@@ -304,11 +304,13 @@ PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
         /* Haven't lost any bits, but casting to long requires extra
          * care (see comment above).
          */
-        if (x <= (unsigned long)LONG_MAX) {
-            res = (long)x * sign;
+        if (x <= (unsigned long long)LLONG_MAX) {
+            res = (long long)x * sign;
         }
-        else if (sign < 0 && x == PY_ABS_LONG_MIN) {
-            res = LONG_MIN;
+// defined later in this file
+#define PY_ABS_LLONG_MIN (0-(unsigned PY_LONG_LONG)PY_LLONG_MIN)
+        else if (sign < 0 && x == PY_ABS_LLONG_MIN) {
+            res = LLONG_MIN;
         }
         else {
             *overflow = sign;
@@ -325,11 +327,11 @@ PyLong_AsLongAndOverflow(PyObject *vv, int *overflow)
 /* Get a C long int from a long int object.
    Returns -1 and sets an error condition if overflow occurs. */
 
-long
+long long
 PyLong_AsLong(PyObject *obj)
 {
     int overflow;
-    long result = PyLong_AsLongAndOverflow(obj, &overflow);
+    long long result = PyLong_AsLongAndOverflow(obj, &overflow);
     if (overflow) {
         /* XXX: could be cute and give a different
            message for overflow == -1 */
@@ -3962,7 +3964,7 @@ long_long(PyObject *v)
 static PyObject *
 long_int(PyObject *v)
 {
-    long x;
+    long long x;
     x = PyLong_AsLong(v);
     if (PyErr_Occurred()) {
         if (PyErr_ExceptionMatches(PyExc_OverflowError)) {

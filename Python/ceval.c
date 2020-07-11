@@ -1479,12 +1479,12 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int + int */
-                register long a, b, i;
+                register long long a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 /* cast to avoid undefined behaviour
                    on overflow */
-                i = (long)((unsigned long)a + b);
+                i = (long long)((unsigned long long)a + b);
                 if ((i^a) < 0 && (i^b) < 0)
                     goto slow_add;
                 x = PyInt_FromLong(i);
@@ -1513,12 +1513,12 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int - int */
-                register long a, b, i;
+                register long long a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 /* cast to avoid undefined behaviour
                    on overflow */
-                i = (long)((unsigned long)a - b);
+                i = (long long)((unsigned long long)a - b);
                 if ((i^a) < 0 && (i^~b) < 0)
                     goto slow_sub;
                 x = PyInt_FromLong(i);
@@ -1727,7 +1727,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int + int */
-                register long a, b, i;
+                register long long a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 i = a + b;
@@ -1759,7 +1759,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(v) && PyInt_CheckExact(w)) {
                 /* INLINE: int - int */
-                register long a, b, i;
+                register long long a, b, i;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
                 i = a - b;
@@ -2569,7 +2569,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             v = TOP();
             if (PyInt_CheckExact(w) && PyInt_CheckExact(v)) {
                 /* INLINE: cmp(int, int) */
-                register long a, b;
+                register long long a, b;
                 register int res;
                 a = PyInt_AS_LONG(v);
                 b = PyInt_AS_LONG(w);
@@ -2602,7 +2602,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
 
         TARGET(IMPORT_NAME)
         {
-            long res;
+            long long res;
             w = GETITEM(names, oparg);
             x = PyDict_GetItemString(f->f_builtins, "__import__");
             if (x == NULL) {

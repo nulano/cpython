@@ -2342,7 +2342,7 @@ builtin_sum(PyObject *self, PyObject *args)
        to the more general routine.
     */
     if (PyInt_CheckExact(result)) {
-        long i_result = PyInt_AS_LONG(result);
+        long long i_result = PyInt_AS_LONG(result);
         Py_DECREF(result);
         result = NULL;
         while(result == NULL) {
@@ -2354,8 +2354,8 @@ builtin_sum(PyObject *self, PyObject *args)
                 return PyInt_FromLong(i_result);
             }
             if (PyInt_CheckExact(item)) {
-                long b = PyInt_AS_LONG(item);
-                long x = i_result + b;
+                long long b = PyInt_AS_LONG(item);
+                long long x = i_result + b;
                 if ((x^i_result) >= 0 || (x^b) >= 0) {
                     i_result = x;
                     Py_DECREF(item);

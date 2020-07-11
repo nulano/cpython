@@ -459,7 +459,7 @@ analyze_cells(PyObject *scope, PyObject *free)
     if (!w)
         return 0;
     while (PyDict_Next(scope, &pos, &name, &v)) {
-        long flags;
+        long long flags;
         assert(PyInt_Check(v));
         flags = PyInt_AS_LONG(v);
         if (flags != LOCAL)
@@ -537,7 +537,7 @@ update_symbols(PyObject *symbols, PyObject *scope,
     Py_ssize_t pos = 0;
 
     while (PyDict_Next(symbols, &pos, &name, &v)) {
-        long i, flags;
+        long long i, flags;
         assert(PyInt_Check(v));
         flags = PyInt_AS_LONG(v);
         w = PyDict_GetItem(scope, name);
@@ -570,7 +570,7 @@ update_symbols(PyObject *symbols, PyObject *scope,
             */
             if  (classflag &&
                  PyInt_AS_LONG(o) & (DEF_BOUND | DEF_GLOBAL)) {
-                long i = PyInt_AS_LONG(o) | DEF_FREE_CLASS;
+                long long i = PyInt_AS_LONG(o) | DEF_FREE_CLASS;
                 o = PyInt_FromLong(i);
                 if (!o) {
                     Py_DECREF(free_value);
@@ -669,7 +669,7 @@ analyze_block(PySTEntryObject *ste, PyObject *bound, PyObject *free,
     }
 
     while (PyDict_Next(ste->ste_symbols, &pos, &name, &v)) {
-        long flags = PyInt_AS_LONG(v);
+        long long flags = PyInt_AS_LONG(v);
         if (!analyze_name(ste, scope, name, flags,
                           bound, local, free, global))
             goto error;
@@ -869,7 +869,7 @@ symtable_enter_block(struct symtable *st, identifier name, _Py_block_ty block,
     return 1;
 }
 
-static long
+static long long
 symtable_lookup(struct symtable *st, PyObject *name)
 {
     PyObject *o;
@@ -888,7 +888,7 @@ symtable_add_def(struct symtable *st, PyObject *name, int flag)
 {
     PyObject *o;
     PyObject *dict;
-    long val;
+    long long val;
     PyObject *mangled = _Py_Mangle(st->st_private, name);
 
     if (!mangled)
@@ -1148,7 +1148,7 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
         for (i = 0; i < asdl_seq_LEN(seq); i++) {
             identifier name = (identifier)asdl_seq_GET(seq, i);
             char *c_name = PyString_AS_STRING(name);
-            long cur = symtable_lookup(st, name);
+            long long cur = symtable_lookup(st, name);
             if (cur < 0)
                 return 0;
             if (cur & (DEF_LOCAL | USE)) {
