@@ -4173,7 +4173,7 @@ formatint(char *buf, size_t buflen, int flags,
        + 1 + 1 = 24 */
     char fmt[64];       /* plenty big enough! */
     char *sign;
-    long x;
+    long long x;
 
     x = PyInt_AsLong(v);
     if (x == -1 && PyErr_Occurred()) {
@@ -4213,11 +4213,11 @@ formatint(char *buf, size_t buflen, int flags,
          * Note that this is the same approach as used in
          * formatint() in unicodeobject.c
          */
-        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s0%c%%.%dll%c",
                       sign, type, prec, type);
     }
     else {
-        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dl%c",
+        PyOS_snprintf(fmt, sizeof(fmt), "%s%%%s.%dll%c",
                       sign, (flags&F_ALT) ? "#" : "",
                       prec, type);
     }

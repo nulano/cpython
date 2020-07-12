@@ -348,7 +348,7 @@ int
 _PyLong_AsInt(PyObject *obj)
 {
     int overflow;
-    long result = PyLong_AsLongAndOverflow(obj, &overflow);
+    long long result = PyLong_AsLongAndOverflow(obj, &overflow);
     if (overflow || result > INT_MAX || result < INT_MIN) {
         /* XXX: could be cute and give a different
            message for overflow == -1 */
