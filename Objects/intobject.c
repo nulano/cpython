@@ -459,7 +459,7 @@ int_hash(PyIntObject *v)
 {
     /* XXX If this is changed, you also need to change the way
        Python's long, float and complex types are hashed. */
-    long long x = v -> ob_ival;
+    long x = v -> ob_ival;
     if (x == -1)
         x = -2;
     return x;
