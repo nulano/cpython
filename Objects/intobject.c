@@ -860,7 +860,7 @@ int_lshift(PyIntObject *v, PyIntObject *w)
     }
     if (a == 0 || b == 0)
         return int_int(v);
-    if (b >= LONG_BIT) {
+    if (b >= 64) {
         vv = PyLong_FromLong(PyInt_AS_LONG(v));
         if (vv == NULL)
             return NULL;
@@ -904,7 +904,7 @@ int_rshift(PyIntObject *v, PyIntObject *w)
     }
     if (a == 0 || b == 0)
         return int_int(v);
-    if (b >= LONG_BIT) {
+    if (b >= 64) {
         if (a < 0)
             a = -1;
         else
