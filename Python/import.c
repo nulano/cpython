@@ -812,6 +812,8 @@ check_compiled_module(char *pathname, time_t mtime, char *cpathname)
     long magic;
     long pyc_mtime;
 
+    return NULL;    /* XXX disable .pyc files reading */
+
     fp = fopen(cpathname, "rb");
     if (fp == NULL)
         return NULL;
@@ -962,6 +964,8 @@ write_compiled_module(PyCodeObject *co, char *cpathname, struct stat *srcstat, t
 #else
     mode_t mode = srcstat->st_mode & ~S_IXUSR & ~S_IXGRP & ~S_IXOTH;
 #endif
+
+    return;    /* XXX disable .pyc files saving */
 
     fp = open_exclusive(cpathname, mode);
     if (fp == NULL) {
