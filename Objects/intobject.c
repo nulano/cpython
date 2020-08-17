@@ -202,7 +202,7 @@ _PyInt_AsInt(PyObject *obj)
 Py_ssize_t
 PyInt_AsSsize_t(register PyObject *op)
 {
-#if SIZEOF_SIZE_T != SIZEOF_LONG
+#if SIZEOF_SIZE_T != SIZEOF_LONG_LONG
     PyNumberMethods *nb;
     PyObject *io;
     Py_ssize_t val;
@@ -217,7 +217,7 @@ PyInt_AsSsize_t(register PyObject *op)
         return PyInt_AS_LONG((PyIntObject*) op);
     if (PyLong_Check(op))
         return _PyLong_AsSsize_t(op);
-#if SIZEOF_SIZE_T == SIZEOF_LONG
+#if SIZEOF_SIZE_T == SIZEOF_LONG_LONG
     return PyInt_AsLong(op);
 #else
 
@@ -678,7 +678,7 @@ int_true_divide(PyIntObject *x, PyIntObject *y)
     if (xi == 0)
         return PyFloat_FromDouble(yi < 0 ? -0.0 : 0.0);
 
-#define WIDTH_OF_ULONG (CHAR_BIT*SIZEOF_LONG)
+#define WIDTH_OF_ULONG (CHAR_BIT*SIZEOF_LONG_LONG)
 #if DBL_MANT_DIG < WIDTH_OF_ULONG
     if ((xi >= 0 ? 0UL + xi : 0UL - xi) >> DBL_MANT_DIG ||
         (yi >= 0 ? 0UL + yi : 0UL - yi) >> DBL_MANT_DIG)
@@ -993,7 +993,7 @@ bits_in_ulong(unsigned long long d)
     return d_bits;
 }
 
-#if 8*SIZEOF_LONG-1 <= DBL_MANT_DIG
+#if 8*SIZEOF_LONG_LONG-1 <= DBL_MANT_DIG
 /* Every Python int can be exactly represented as a float. */
 
 static PyObject *
@@ -1017,7 +1017,7 @@ int_float(PyIntObject *v)
         abs_ival = 0U-(unsigned long long)v->ob_ival;
     else
         abs_ival = (unsigned long long)v->ob_ival;
-    if (abs_ival < (1L << DBL_MANT_DIG))
+    if (abs_ival < (1LL << DBL_MANT_DIG))
         /* small integer;  no need to round */
         return PyFloat_FromDouble((double)v->ob_ival);
 
@@ -1036,7 +1036,7 @@ int_float(PyIntObject *v)
 
        The condition "(1) or (2)" equates to abs_ival & 3*lsb-1 != 0. */
 
-    lsb = 1L << (bits_in_ulong(abs_ival)-DBL_MANT_DIG-1);
+    lsb = 1LL << (bits_in_ulong(abs_ival)-DBL_MANT_DIG-1);
     round_up = (abs_ival & lsb) && (abs_ival & (3*lsb-1));
     abs_ival &= -2*lsb;
     if (round_up)

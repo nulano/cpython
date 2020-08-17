@@ -439,13 +439,13 @@ float_richcompare(PyObject *v, PyObject *w, int op)
     }
 
     else if (PyInt_Check(w)) {
-        long jj = PyInt_AS_LONG(w);
+        long long jj = PyInt_AS_LONG(w);
         /* In the worst realistic case I can imagine, C double is a
          * Cray single with 48 bits of precision, and long has 64
          * bits.
          */
-#if SIZEOF_LONG > 6
-        unsigned long abs = (unsigned long)(jj < 0 ? -jj : jj);
+#if SIZEOF_LONG_LONG > 6
+        unsigned long long abs = (unsigned long long)(jj < 0 ? -jj : jj);
         if (abs >> 48) {
             /* Needs more than 48 bits.  Make it take the
              * PyLong path.
@@ -461,7 +461,7 @@ float_richcompare(PyObject *v, PyObject *w, int op)
         }
 #endif
         j = (double)jj;
-        assert((long)j == jj);
+        assert((long long)j == jj);
     }
 
     else if (PyLong_Check(w)) {
@@ -959,7 +959,7 @@ static int
 float_coerce(PyObject **pv, PyObject **pw)
 {
     if (PyInt_Check(*pw)) {
-        long x = PyInt_AsLong(*pw);
+        long long x = PyInt_AsLong(*pw);
         *pw = PyFloat_FromDouble((double)x);
         Py_INCREF(*pv);
         return 0;
