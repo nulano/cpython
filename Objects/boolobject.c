@@ -35,7 +35,7 @@ bool_repr(PyBoolObject *self)
 
 /* Function to return a bool from a C long */
 
-PyObject *PyBool_FromLong(long ok)
+PyObject *PyBool_FromLong(long long ok)
 {
     PyObject *result;
 
