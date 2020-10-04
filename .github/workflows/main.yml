@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ cpython6464 ]
+  pull_request:
+    branches: [ cpython6464 ]
+
+jobs:
+  build:
+    runs-on: windows-2016
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          cd PCbuild
+          build.bat -p x64
+
+      - name: Quick Test
+        run: |
+          import sys
+          print(sys.maxsize)
+        shell: python.bat {0}
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          path: PCbuild\amd64
