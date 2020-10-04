@@ -17,6 +17,7 @@ jobs:
         run: |
           cd PCbuild
           build.bat -p x64
+        shell: cmd
 
       - name: Quick Test
         run: |
