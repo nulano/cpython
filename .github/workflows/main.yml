@@ -17,7 +17,7 @@ jobs:
         run: |
           echo ::add-path::%CD%
           cd PCbuild
-          build.bat -p x64 "/p:PlatformToolset=v141"
+          build.bat -e -p x64 "/p:PlatformToolset=v141"
         shell: cmd
 
       - name: Quick Test
