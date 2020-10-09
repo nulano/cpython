@@ -6292,7 +6292,7 @@ posix_waitpid(PyObject *self, PyObject *args)
     Py_intptr_t pid;
     int status, options;
 
-    if (!PyArg_ParseTuple(args, PARSE_PID "i:waitpid", &pid, &options))
+    if (!PyArg_ParseTuple(args, "Li:waitpid", &pid, &options))
         return NULL;
     Py_BEGIN_ALLOW_THREADS
     pid = _cwait(&status, pid, options);
